@@ -10,25 +10,22 @@ class stack
 private:
 	Data_t* StackData;
 	int StackCurrSize;
-	int StackMaxSize;
-	//int StackSizeStep;	
+	int StackMaxSize;	
 	int StackSizeAdd();
 
 public:
-	stack(int size);//, int step);  это лишнее
+	stack(int size);
 	~stack();
 	int StackOk();
-	int StackPush(Data_t NewVal);
-	Data_t StackPop();
-
+	int push(Data_t NewVal);
+	Data_t pop();
 };
 
 template <typename Data_t>
-stack<Data_t>::stack(int size)//, int step)
+stack<Data_t>::stack(int size)
 {
 	StackMaxSize = size;
 	StackCurrSize = -1;                         //for first 	use must be -1
-	//StackSizeStep = sizeof (Data_t);
 
 	StackData = new Data_t[StackMaxSize];
 }
@@ -42,35 +39,37 @@ stack<Data_t>::~stack()
 template <typename Data_t>
 int stack<Data_t>::StackSizeAdd()
 {
-	StackMaxSize *= 2;//SizeStep;
+	StackMaxSize *= 2;
 	StackData = (Data_t*)realloc(StackData, StackMaxSize);
 	if (!StackData)
     {
 		cout << "NO MEMORY" << endl;
-
 		assert (0);
     }
 	return 0;
 }
 
 template <typename Data_t>
-int stack<Data_t>::StackPush(Data_t NewVal)
+int stack<Data_t>::push(Data_t NewVal)
 {
 	StackCurrSize++;
 	if (StackCurrSize > StackMaxSize)
-		this->StackSizeAdd;
+		this->StackSizeAdd();
 	if (this->StackOk())
 		StackData[StackCurrSize] = NewVal;
+	else cout << "Stack not OK" << endl;
 	return 0;
 }
 
 template <typename Data_t>
-Data_t stack<Data_t>::StackPop()
+Data_t stack<Data_t>::pop()
 {
-	if (this->StackOk)
+
+	if (this->StackOk())
 	{
-		return (StackData[StackCurrSize]);
 		StackCurrSize--;
+		return (StackData[StackCurrSize + 1]);
+		
 	}
 	else
 		cout << "STACK IS EMPTY" << endl;
@@ -86,6 +85,14 @@ int stack<Data_t>::StackOk()
 
 int main()
 {
+	stack<int> test_stack(5);
+
+	for (int i = 0; (i < 8); i++)
+	{
+		    printf("i = %d start: ", i);
+			test_stack.push(i);
+			printf("i = %d\n", i);
+	}
 	
 	return 0;
 }
